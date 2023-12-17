@@ -1,4 +1,4 @@
-import { writeFileSync } from "node:fs";
+import { writeFileSync } from 'node:fs';
 
 const errors: unknown[] = [];
 
@@ -11,10 +11,7 @@ export const storeError = (error: unknown) => {
 };
 
 export const writeErrorsJson = () => {
-  writeFileSync(
-    __dirname + "/../errors.json",
-    JSON.stringify(errors.map(getErrorMessage), null, 2),
-  );
+  writeFileSync(__dirname + '/../errors.json', JSON.stringify(errors.map(getErrorMessage), null, 2));
 };
 
 export const getErrorMessage = (error: unknown): string => {
@@ -22,5 +19,5 @@ export const getErrorMessage = (error: unknown): string => {
     return error.message;
   }
 
-  return "" + error;
+  return '' + error;
 };

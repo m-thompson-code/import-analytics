@@ -1,10 +1,10 @@
-import type { Output, Input } from "./types";
+import type { Output, Input } from './types';
 
 export function calculateAggregates(
-  repos: Output["repos"],
-  imports: Input["library"]["imports"],
-  dependencies: Input["dependencies"],
-): Pick<Output["aggregates"], "imports" | "dependencies"> {
+  repos: Output['repos'],
+  imports: Input['library']['imports'],
+  dependencies: Input['dependencies'],
+): Pick<Output['aggregates'], 'imports' | 'dependencies'> {
   const aggregates = {
     dependencies: dependencies
       ? dependencies.reduce((acc, curr) => {

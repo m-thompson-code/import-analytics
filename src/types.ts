@@ -2,8 +2,8 @@ export interface GitOptions {
   username?: string;
   password?: string;
   owner: string;
-  hosting: "github" | "bitbucket";
-  protocol: "ssh" | "https";
+  hosting: 'github' | 'bitbucket';
+  protocol: 'ssh' | 'https';
   branch: string;
 }
 

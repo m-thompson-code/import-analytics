@@ -1,6 +1,6 @@
-import { join, sep } from "node:path";
-import { mkdtempSync } from "node:fs";
-import { tmpdir } from "node:os";
+import { join, sep } from 'node:path';
+import { mkdtempSync } from 'node:fs';
+import { tmpdir } from 'node:os';
 
 const tmpDir = tmpdir();
 
@@ -12,4 +12,4 @@ export const getTempDir = () => {
 };
 
 // Local directory (for debugging)
-export const getLocalTempDir = () => join(__dirname, "../temp");
+export const getLocalTempDir = () => join(__dirname, '../temp');

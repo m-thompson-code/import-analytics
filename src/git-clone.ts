@@ -1,10 +1,10 @@
-import shell from "shelljs";
-import { rmSync } from "node:fs";
-import { GitCloneOptions } from "./types";
-import { getErrorMessage, storeError } from "./errors";
+import shell from 'shelljs';
+import { rmSync } from 'node:fs';
+import { GitCloneOptions } from './types';
+import { getErrorMessage, storeError } from './errors';
 
 // Attempt to clean up if process exits for any reason
-process.on("exit", () => {
+process.on('exit', () => {
   cleanupAll();
 });
 
@@ -20,19 +20,14 @@ function execAsync(cmd: string, opts: shell.ExecOptions = {}): Promise<string> {
   });
 }
 
-export const gitClone = async (
-  options: GitCloneOptions,
-): Promise<() => void> => {
+export const gitClone = async (options: GitCloneOptions): Promise<() => void> => {
   const { repoName, repoPath, hosting } = options;
 
   if (cleanupMap[repoName]) {
-    throw new Error("Duplicate repoName");
+    throw new Error('Duplicate repoName');
   }
 
-  const execScript =
-    hosting === "github"
-      ? gitCloneGithubScript(options)
-      : gitCloneBitbucketScript(options);
+  const execScript = hosting === 'github' ? gitCloneGithubScript(options) : gitCloneBitbucketScript(options);
 
   try {
     await execAsync(execScript);
@@ -52,24 +47,19 @@ export const gitClone = async (
 };
 
 export const gitCloneGithubScript = (options: GitCloneOptions): string => {
-  const { protocol, owner, repoName, repoPath, username, password, branch } =
-    options;
+  const { protocol, owner, repoName, repoPath, username, password, branch } = options;
 
-  if (protocol === "ssh") {
+  if (protocol === 'ssh') {
     return `git clone --branch ${branch} git@github.com:${owner}/${repoName}.git ${repoPath}`;
   } else {
-    return `git clone --branch ${branch} https://${getCloneCredentials(
-      username,
-      password,
-    )}github.com/${owner}/${repoName}.git ${repoPath}`;
+    return `git clone --branch ${branch} https://${getCloneCredentials(username, password)}github.com/${owner}/${repoName}.git ${repoPath}`;
   }
 };
 
 export const gitCloneBitbucketScript = (options: GitCloneOptions): string => {
-  const { protocol, owner, repoName, repoPath, username, password, branch } =
-    options;
+  const { protocol, owner, repoName, repoPath, username, password, branch } = options;
 
-  if (protocol === "ssh") {
+  if (protocol === 'ssh') {
     return `git clone --branch ${branch} git@bitbucket.org:${owner}/${repoName}.git ${repoPath}`;
   } else {
     return `git clone --branch ${branch} https://${getCloneCredentials(
@@ -79,16 +69,13 @@ export const gitCloneBitbucketScript = (options: GitCloneOptions): string => {
   }
 };
 
-const getCloneCredentials = (
-  username: GitCloneOptions["username"],
-  password: GitCloneOptions["password"],
-): string => {
+const getCloneCredentials = (username: GitCloneOptions['username'], password: GitCloneOptions['password']): string => {
   if (username && password) {
     return `${username}:${password}@`;
   } else if (username) {
     return `${username}@`;
   } else {
-    return "";
+    return '';
   }
 };
 
@@ -102,16 +89,13 @@ export const cleanupAll = (): void => {
 
 export const getLastCommitDate = async (repoPath: string): Promise<string> => {
   try {
-    const stdout = await execAsync(
-      `git log -1 --format=%cd --date=format:'%Y-%m-%d'`,
-      {
-        cwd: repoPath,
-      },
-    );
+    const stdout = await execAsync(`git log -1 --format=%cd --date=format:'%Y-%m-%d'`, {
+      cwd: repoPath,
+    });
 
     return stdout.trim();
   } catch (error) {
     storeError(error.message);
-    return Promise.resolve("");
+    return Promise.resolve('');
   }
 };
